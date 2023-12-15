@@ -1,0 +1,228 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    font-family: 'Jost', sans-serif;
+    flex-direction: column;
+    background: #f6f6f6;
+}
+
+.top-nav {
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+    height: 50px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    margin: 0;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-nav .nav-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+}
+
+.nav-title {
+    position: relative;
+    top: 10px;
+    left: 20px;
+    margin: 5px;
+
+}
+
+.top-nav .nav-links {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.top-nav a {
+    padding: 10px 15px;
+    margin-left: 10px; /* Spacing between links */
+    background-color: #a52a2a; /* Flat button design */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.top-nav a:hover {
+    background-color: #800000;
+}
+
+@media (max-width: 768px) {
+    .top-nav {
+        padding: 10px;
+    }
+    .top-nav .nav-links a {
+        padding: 8px 10px;
+        margin-left: 8px;
+    }
+}
+
+.header {
+    text-align: center;
+}
+
+.main {
+    width: 60%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 20px 50px #ddd;
+    text-align: center;
+}
+
+#searchInput {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#searchButton, #profileButton, #savedPapersButton {
+    font-family: 'Jost', sans-serif;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a52a2a;
+    color: white;
+    cursor: pointer;
+}
+
+#results {
+    width: calc(100% - 30px);
+    margin-top: 20px;
+    text-align: left;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+
+.user-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.search-results {
+    margin-top: 20px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.search-result-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    text-align: left;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.search-result-item p {
+    margin: 0;
+    color: #666;
+}
+
+.search-result-item p strong {
+    color: #333;
+}
+
+.advanced-search {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.advanced-search h3 {
+    margin-top: 0;
+    color: #333;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+.filter {
+    margin: 10px;
+    flex-basis: calc(25% - 20px); 
+    box-sizing: border-box;
+}
+
+.filter input[type="date"],
+.filter input[type="text"],
+.filter input[type="number"],
+.filter select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .filter {
+        flex-basis: calc(50% - 20px);
+    }
+}
+
+/* styles.css */
+.save-in-account {
+    background-color: #a52a2a;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+}
+
+.save-as-pdf {
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+}
+

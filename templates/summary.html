@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='summary.css') }}">
+    <title>ArXiv Paper Summarizer</title>
+</head>
+<body onload="openTabOnLoad()">
+
+    <div class="top-nav">
+        <div class="nav-title">ArXiv Intellect</div>
+        <div class="nav-links">
+            <a href="{{ url_for('profile') }}" id="profileButton" >My Profile</a>
+            <a href="{{ url_for('main') }}" id="savedPapersButton">Search Papers</a>
+            <a href="{{ url_for('logout') }}" id="LogoutButton">Logout</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Saved Papers</h1>
+    </div>
+
+    <main class="main">
+        <section class="saved-papers-section">
+            <ul id="savedPapersList" class="saved-papers-list">
+            </ul>
+
+            <div class="paper-actions">
+                <button id="createSummaryButton" class="action-button">Create Summary using AI</button>
+                <button id="deletePaperButton" class="action-button">Delete Paper</button>
+            </div>
+        </section>
+
+        <section class="details-section">
+            <div class="tabs">
+                <button class="tab-button" onclick="openTab(event, 'Abstract')">Abstract</button>
+                <button class="tab-button" onclick="openTab(event, 'KeyFindings')">Key Findings/Results</button>
+                <button class="tab-button" onclick="openTab(event, 'Methodology')">Methodology</button>
+                <button class="tab-button" onclick="openTab(event, 'RelatedWork')">Related Work</button>
+            </div>
+        
+            <div id="Abstract" class="tab-content">
+                <p>This is the abstract of the paper...</p>
+            </div>
+        
+            <div id="KeyFindings" class="tab-content">
+                <p>Results will be shown after using AI...</p>
+            </div>
+        
+            <div id="Methodology" class="tab-content">
+                <p>Results will be shown after using AI...</p>
+            </div>
+
+            <div id="RelatedWork" class="tab-content">
+                <p>Results will be shown after using AI...</p>
+            </div>
+        </section>
+    </main>
+    <script src="{{ url_for('static', filename='summary.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Jost', sans-serif;
+    flex-direction: column;
+    background: #f6f6f6;
+}
+
+.top-nav {
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+    height: 50px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    margin: 0;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-nav .nav-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+}
+
+.nav-title {
+    position: relative;
+    top: 10px;
+    left: 20px;
+    margin: 5px;
+}
+
+
+.top-nav .nav-links {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.top-nav a {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #a52a2a;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.top-nav a:hover {
+    background-color: #800000;
+}
+
+.saved-papers-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 240px;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.paper-actions {
+
+    text-align: center;
+}
+
+.action-button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a52a2a;
+    color: white;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+}
+
+.action-button:hover {
+    background-color: #800000;
+}
+
+.saved-papers-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+    overflow-y: auto; 
+    flex-grow: 1;
+}
+
+.saved-papers-list .paper-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.saved-papers-list .paper-item:last-child {
+    border-bottom: none;
+}
+
+.saved-papers-list .paper-item:hover {
+    background-color: #f0f0f0;
+}
+
+.saved-papers-section, .details-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto;
+}
+
+.tabs {
+    overflow: hidden;
+    background: #f1f1f1;
+    font-family: 'Jost', sans-serif;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    font-family: 'Jost', sans-serif;
+    transition: background-color 0.3s;
+    font-size: 17px;
+    width: 24%;
+}
+
+.tab-button:hover {
+    background-color: #ddd;
+}
+
+.tab-button.active {
+    background-color: #ccc;
+}
+
+.tab-content {
+    display: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-top: none;
+    min-height: 250px;
+    overflow-y: auto;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .tab-button {
+        padding: 10px;
+        font-size: 14px;
+        width: auto;
+    }
+    .top-nav {
+        padding: 10px;
+    }
+    .top-nav .nav-links a {
+        padding: 8px 10px;
+        margin-left: 8px;
+    }
+
+    .saved-papers-section {
+        margin-top: 20px;
+    }
+
+    .saved-papers-section h2 {
+        font-size: 18px;
+    }
+
+    .saved-papers-list .paper-item {
+        padding: 8px;
+    }
+
+}
+
+.header {
+    text-align: center;
+}
+
+.main {
+    width: 70%;
+    max-width: 800px;
+    margin: 20px;
+    padding: 30px;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 20px 50px #ddd;
+    text-align: center;
+}
+
+#searchInput {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#searchButton, #profileButton, #savedPapersButton, #LogoutButton {
+    font-family: 'Jost', sans-serif;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a52a2a;
+    color: white;
+    cursor: pointer;
+}
+
+#Abstract, #References, #Citations {
+    text-align: left;
+}
+
+.user-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.saved-papers-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.paper-item {
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.paper-item.active-paper {
+    background-color: gray;
+}
+
+
+.no-papers-item {
+    color: #888;
+    text-align: center;
+    padding: 10px;
+}
+

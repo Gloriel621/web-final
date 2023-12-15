@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <title>My Profile - ArXiv Intellect</title>
+</head>
+<script>
+    window.onload = function() {
+        document.getElementById('profilePictureInput').addEventListener('change', function() {
+            var formData = new FormData();
+            formData.append('profile_picture', this.files[0]);
+            
+            fetch('{{ url_for("update_profile_picture") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Upload failed');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    };
+</script>    
+    
+<body>
+
+    <div class="top-nav">
+        <div class="nav-title">ArXiv Intellect</div>
+        <div class="nav-links">
+            <a href="{{ url_for('summary') }}" id="savedPapersButton">Saved Papers</a>
+            <a href="{{ url_for('main') }}" id="savedPapersButton">Search Papers</a>
+            <a href="{{ url_for('logout') }}" id="LogoutButton">Logout</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>My Profile</h1>
+    </div>
+
+    <main class="main profile-main">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-info">
+                <h3>About Me</h3>
+                <ul>
+                    <li>Name: {{ current_user.name or 'Not provided' }}</li>
+                    <li>Title: {{ current_user.title or 'Not provided' }}</li>
+                    <li>Affiliation: {{ current_user.affiliation or 'Not provided' }}</li>
+                    <li>Specialization: {{ current_user.specialization or 'Not provided' }}</li>
+                    <li>Education: {{ current_user.education or 'Not provided' }}</li>
+                    <li>Contact: {{ current_user.contact or 'Not provided' }}</li>
+                </ul>
+            </div>
+            <div class="profile-picture-container" onclick="document.getElementById('profilePictureInput').click();">
+                {% if current_user.profile_picture %}
+                    <img src="{{ url_for('static', filename=current_user.profile_picture) }}" alt="Profile Picture" class="profile-picture">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/default_picture.jpg') }}" alt="Default Profile Picture" class="profile-picture">
+                {% endif %}
+                <div class="edit-text">Edit Profile Image</div>
+            </div>
+            <input type="file" id="profilePictureInput" name="profile_picture" accept="image/*" style="display: none;">
+            
+        </section>
+        
+        <!-- Activity Feed -->
+        <section class="activity-feed">
+            <div class="recent-activity">
+                <h3>Research and Publications</h3>
+                <ul>
+                    <li>Paper: {{ current_user.paper or 'Not provided' }}</li>
+                    <li>Article: {{ current_user.article or 'Not provided' }}</li>
+                    <li>Conference Presentation: {{ current_user.presentation or 'Not provided' }}</li>
+                    <li>Research Project: {{ current_user.project or 'Not provided' }}</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Settings and Support -->
+        <section class="settings-support">
+            <a href="{{ url_for('editprofile') }}">Edit Profile</a>
+        </section>
+    </main>
+
+</body>
+</html>

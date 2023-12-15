@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArXiv Intellect Home/Search Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+   
+<body>
+    <nav class="top-nav">
+        <div class="nav-title">ArXiv Intellect</div>
+        <div class="nav-links">
+            <a href="{{ url_for('profile') }}" id="profileButton">My Profile</a>
+            <a href="{{ url_for('summary') }}" id="savedPapersButton">Saved Papers</a>
+            <a href="{{ url_for('logout') }}" id="LogoutButton">Logout</a>
+        </div>
+    </nav>    
+    <div class="header">
+		<h1>Search Papers</h1>
+	</div>
+    <div class="main">
+        <div id="searchArea">
+            <input type="text" id="searchInput" placeholder="Search for papers...">
+            <button type="button" id="searchButton">Search</button>
+        </div>
+
+        <div class="advanced-search">
+            <h3>Advanced Filters</h3>
+            <div class="filter-options">
+                <div class="filter">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="filter">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate">
+                </div>
+                <div class="filter">
+                    <label for="researchField">Research Field</label>
+                    <select id="researchField">
+                        <option value="">Select field...</option>
+                            
+                    </select>
+                </div>
+                
+                <div class="filter">
+                    <label for="authorName">Author Name</label>
+                    <input type="text" id="authorName" placeholder="Enter author's name...">
+                </div>
+                <div class="filter">
+                    <label for="titleSearch">Title Search</label>
+                    <input type="text" id="titleSearch" placeholder="Search by title...">
+                </div>
+                <div class="filter">
+                    <label for="arxivId">arXiv ID</label>
+                    <input type="text" id="arxivId" placeholder="Enter arXiv ID...">
+                </div>
+                <div class="filter">
+                    <label for="numPapers">Number of Papers</label>
+                    <input type="number" id="numPapers" placeholder="Enter number..." min="1">
+                </div>
+                <div class="filter">
+                    <label for="sortBy">Sort By</label>
+                    <select id="sortBy">
+                        <option value="relevance">Relevance</option>
+                        <option value="lastUpdatedDate">Last Updated Date</option>
+                        <option value="submittedDate">Submitted Date</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div id="results">
+            <!-- Search results will be displayed here -->
+        </div>       
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
