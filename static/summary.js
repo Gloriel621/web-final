@@ -59,38 +59,37 @@ function loadSavedPapers() {
             console.error('Error loading saved papers:', error);
         });
 }
-
-
-// Call this function when the page loads
 document.addEventListener('DOMContentLoaded', loadSavedPapers);
+
 
 function displayPaperDetails(paperId) {
     currentPaperId = paperId;
     fetch(`/get_paper_details/${paperId}`)
         .then(response => response.json())
         .then(paperDetails => {
-            const abstractSection = document.getElementById('Abstract');
-            abstractSection.innerHTML = `
-                <p>${paperDetails.summary}</p>
-                <a href="${paperDetails.pdf_link}" target="_blank">View Paper</a>
-            `;
+            // Display the abstract or general summary
+            document.getElementById('Abstract').innerHTML = paperDetails.abstract ? `<p>${paperDetails.abstract}</p>` : "<p>No abstract available.</p>";
 
-            // // Open the Abstract tab
-            // openTab(null, 'Abstract');
+            // Display Key Findings, Methodology, and Related Work
+            document.getElementById('KeyFindings').innerHTML = paperDetails.key_findings ? `<p>${paperDetails.key_findings}</p>` : "<p>Run AI to get a summary.</p>";
+            document.getElementById('Methodology').innerHTML = paperDetails.methodology ? `<p>${paperDetails.methodology}</p>` : "<p>Run AI to get a summary.</p>";
+            document.getElementById('RelatedWork').innerHTML = paperDetails.related_work ? `<p>${paperDetails.related_work}</p>` : "<p>Run AI to get a summary.</p>";
         })
         .catch(error => {
             console.error('Error fetching paper details:', error);
         });
 
-        const papersListItems = document.querySelectorAll('#savedPapersList .paper-item');
-        papersListItems.forEach(item => {
-            if(item.getAttribute('data-paper-id') == paperId) {
-                item.classList.add('active-paper');
-            } else {
-                item.classList.remove('active-paper');
-            }
-        });
+    // Highlight the active paper in the list
+    const papersListItems = document.querySelectorAll('#savedPapersList .paper-item');
+    papersListItems.forEach(item => {
+        if(item.getAttribute('data-paper-id') == paperId) {
+            item.classList.add('active-paper');
+        } else {
+            item.classList.remove('active-paper');
+        }
+    });
 }
+
 
 document.getElementById('deletePaperButton').addEventListener('click', function() {
     const activePaperElement = document.querySelector('.paper-item.active-paper');
@@ -114,22 +113,67 @@ document.getElementById('deletePaperButton').addEventListener('click', function(
 });
 
 document.getElementById('createSummaryButton').addEventListener('click', function() {
+    var createSummaryButton = this;
     if (currentPaperId) {
+        createSummaryButton.disabled = true;
+        createSummaryButton.textContent = 'Generating summaries...';
+        // Consider adding a spinner or other visual feedback here
+
         fetch(`/api/summarize_paper/${currentPaperId}`)
-        .then(response => response.json())
-        .then(data => {
-            if(data.summaries) {
-                // Code to display summaries in the respective tabs
-            } else {
-                console.error('Error:', data.error);
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                if(data.summaries && data.summaries.length === 3) {
+                    // Update the DOM with the generated summaries
+                    document.getElementById('KeyFindings').innerHTML = data.summaries[0] || "<p>Key findings not available.</p>";
+                    document.getElementById('Methodology').innerHTML = data.summaries[1] || "<p>Methodology not available.</p>";
+                    document.getElementById('RelatedWork').innerHTML = data.summaries[2] || "<p>Related work not available.</p>";
+
+                    // Optionally prompt the user to review before saving
+                    if (confirm('Summaries generated. Would you like to save them now?')) {
+                        saveSummariesToDatabase(currentPaperId, {
+                            keyFindings: data.summaries[0],
+                            methodology: data.summaries[1],
+                            relatedWork: data.summaries[2]
+                        });
+                    }
+                } else {
+                    console.error('Error:', data.error);
+                    alert('Unable to generate summaries. Please try again.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching the summary.');
+            })
+            .finally(() => {
+                createSummaryButton.disabled = false;
+                createSummaryButton.textContent = 'Create Summary using AI';
+                // Hide or remove the visual feedback here
+            });
     } else {
         alert('Please select a paper to summarize.');
     }
 });
 
+
+
+// Assume this function is called after summaries are received and displayed
+function saveSummariesToDatabase(paperId, summaries) {
+    fetch(`/save_summary/${paperId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(summaries),
+        credentials: 'same-origin' // For handling user sessions
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message); // Or update the UI to show that the summary was saved
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 

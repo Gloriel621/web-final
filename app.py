@@ -14,6 +14,8 @@ import requests
 import openai
 from PyPDF2 import PdfReader
 
+from openai_ import openai_api_key
+
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -69,6 +71,9 @@ class ResearchPaper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     summary = db.Column(db.Text, nullable=True)
+    key_findings = db.Column(db.Text, nullable=True)
+    methodology = db.Column(db.Text, nullable=True)
+    related_work = db.Column(db.Text, nullable=True)  
     published_date = db.Column(db.String(100), nullable=True)
     updated_date = db.Column(db.String(100), nullable=True)
     comments = db.Column(db.String(200), nullable=True)
@@ -251,13 +256,13 @@ def search():
     papers = []
     for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
 
-        pdf_link = ''
-        webpage_link = ''
-        for link in entry.findall('{http://www.w3.org/2005/Atom}link'):
-            if link.get('title') == 'pdf':
-                pdf_link = link.get('href')
-            elif link.get('rel') == 'alternate':
-                webpage_link = link.get('href')
+        # Extract the arXiv ID from the entry ID
+        entry_id = entry.find('{http://www.w3.org/2005/Atom}id').text
+        arxiv_id = entry_id.split('/')[-1]  # Assuming the format is always consistent
+
+        # Construct the PDF link using the arXiv ID
+        pdf_link = f'http://arxiv.org/pdf/{arxiv_id}.pdf'
+        print(pdf_link)
 
         categories = entry.findall('{http://www.w3.org/2005/Atom}category')
         first_category = categories[0].get('term') if categories else ''       
@@ -269,7 +274,6 @@ def search():
             'updated': entry.find('{http://www.w3.org/2005/Atom}updated').text,
             'comments': entry.find('{http://arxiv.org/schemas/atom}comment').text if entry.find('{http://arxiv.org/schemas/atom}comment') is not None else '',
             'pdf_link': pdf_link,  # Store PDF link
-            'webpage_link': webpage_link,  # Store webpage link
             'categories': first_category,
         }
         papers.append(paper)
@@ -329,11 +333,13 @@ def get_paper_details(paper_id):
     paper = ResearchPaper.query.get(paper_id)
     if paper and paper.user_id == current_user.id:
         return jsonify({
-            'title': paper.title,
-            'summary': paper.summary,
-            'webpage_link': paper.webpage_link
+            'abstract': paper.summary,
+            'key_findings': paper.key_findings,
+            'methodology': paper.methodology,
+            'related_work': paper.related_work
         })
     return jsonify({'error': 'Paper not found'}), 404
+
 
 @app.route('/delete_paper/<int:paper_id>', methods=['POST'])
 @login_required
@@ -353,7 +359,8 @@ def delete_paper(paper_id):
 def get_saved_papers():
     user_id = current_user.id
     saved_papers = ResearchPaper.query.filter_by(user_id=user_id).all()
-    papers_data = [{'title': paper.title, 'id': paper.id, 'pdf_link': paper.pdf_link} for paper in saved_papers]
+    papers_data = [{'title': paper.title, 'id': paper.id,} for paper in saved_papers]
+    # 'pdf_link': paper.pdf_link
     return jsonify(papers_data)
 
 
@@ -364,9 +371,6 @@ def api_summarize_paper(paper_id):
     if not paper:
         return jsonify({'error': 'Paper not found'}), 404
 
-    openai_api_key = "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"
-    print(paper.pdf_link)
-    print(paper.id)
     try:
         summaries = download_and_summarize_pdf(paper.pdf_link, openai_api_key)
         return jsonify({'summaries': summaries})
@@ -466,6 +470,29 @@ def download_and_summarize_pdf(url, api_key):
     flattened_summaries = [summary for sublist in combined_summaries for summary in sublist]
 
     return flattened_summaries
+
+@app.route('/save_summary/<int:paper_id>', methods=['POST'])
+@login_required
+def save_summary(paper_id):
+    paper = ResearchPaper.query.get(paper_id)
+    if not paper:
+        return jsonify({'error': 'Paper not found'}), 404
+
+    data = request.get_json()
+
+    paper.key_findings = data.get('keyFindings')
+    paper.methodology = data.get('methodology')
+    paper.related_work = data.get('relatedWork')
+
+    try:
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Summary saved successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+
 
 if __name__ == '__main__':
     with app.app_context():

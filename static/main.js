@@ -244,14 +244,21 @@ function populateResearchFields() {
 document.addEventListener('DOMContentLoaded', populateResearchFields);
 
 function savePaperInAccount(paper) {
-    // Retrieve the paper details from somewhere, e.g., a data attribute or a global variable
+    
+    var paperId = paper.id;
+    if (paperId.includes('arxiv.org')) {
+        // Assuming the format is 'http://arxiv.org/abs/{arxiv_id}'
+        paperId = paperId.split('/').pop();
+    }
+
+    console.log("Extracted paperId:", paperId);
     const paperDetails = {
         // You need to fill this object with actual data from your search results
         title: paper.title,
         abstract: paper.abstract,
         summary: paper.summary,
         references: paper.references,
-        download_link: `http://arxiv.org/pdf/${paper.id}.pdf`, // Make sure `paper.id` is correct
+        download_link: `http://arxiv.org/pdf/${paperId}.pdf`, // Make sure `paper.id` is correct
         citations: paper.citations
     };
 

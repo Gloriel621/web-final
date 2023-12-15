@@ -2,3 +2,4 @@
 *.pyc
 *.pdf
 openai_.py
+__pycache__
