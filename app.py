@@ -14,7 +14,7 @@ import requests
 import openai
 from PyPDF2 import PdfReader
 
-from openai_ import openai_api_key
+from openai import openai_api_key
 
 
 # Initialize Flask App
