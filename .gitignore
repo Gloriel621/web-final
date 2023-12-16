@@ -5,3 +5,4 @@ openai_.py
 __pycache__
 instance/
 migrations/
+!images/default_picture.jpg
