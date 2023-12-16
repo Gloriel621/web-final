@@ -3,5 +3,5 @@
 *.pdf
 openai_.py
 __pycache__
-instance/
-migrations/
+instance
+migrations
