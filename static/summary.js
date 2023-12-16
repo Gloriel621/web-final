@@ -99,9 +99,8 @@ document.getElementById('deletePaperButton').addEventListener('click', function(
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
-                    // Remove the paper from the list
+
                     activePaperElement.remove();
-                    // Optionally, clear or update the details section
                 } else {
                     alert('Error deleting paper: ' + result.error);
                 }
@@ -116,19 +115,19 @@ document.getElementById('createSummaryButton').addEventListener('click', functio
     var createSummaryButton = this;
     if (currentPaperId) {
         createSummaryButton.disabled = true;
+        createSummaryButton.classList.add('button-disabled');
         createSummaryButton.textContent = 'Generating summaries...';
-        // Consider adding a spinner or other visual feedback here
 
         fetch(`/api/summarize_paper/${currentPaperId}`)
             .then(response => response.json())
             .then(data => {
                 if(data.summaries && data.summaries.length === 3) {
-                    // Update the DOM with the generated summaries
+
                     document.getElementById('KeyFindings').innerHTML = data.summaries[0] || "<p>Key findings not available.</p>";
                     document.getElementById('Methodology').innerHTML = data.summaries[1] || "<p>Methodology not available.</p>";
                     document.getElementById('RelatedWork').innerHTML = data.summaries[2] || "<p>Related work not available.</p>";
 
-                    // Optionally prompt the user to review before saving
+
                     if (confirm('Summaries generated. Would you like to save them now?')) {
                         saveSummariesToDatabase(currentPaperId, {
                             keyFindings: data.summaries[0],
@@ -147,8 +146,8 @@ document.getElementById('createSummaryButton').addEventListener('click', functio
             })
             .finally(() => {
                 createSummaryButton.disabled = false;
+                createSummaryButton.classList.remove('button-disabled');
                 createSummaryButton.textContent = 'Create Summary using AI';
-                // Hide or remove the visual feedback here
             });
     } else {
         alert('Please select a paper to summarize.');
@@ -156,8 +155,6 @@ document.getElementById('createSummaryButton').addEventListener('click', functio
 });
 
 
-
-// Assume this function is called after summaries are received and displayed
 function saveSummariesToDatabase(paperId, summaries) {
     fetch(`/save_summary/${paperId}`, {
         method: 'POST',
@@ -166,11 +163,11 @@ function saveSummariesToDatabase(paperId, summaries) {
             'Accept': 'application/json'
         },
         body: JSON.stringify(summaries),
-        credentials: 'same-origin' // For handling user sessions
+        credentials: 'same-origin'
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message); // Or update the UI to show that the summary was saved
+        alert(data.message);
     })
     .catch(error => {
         console.error('Error:', error);

@@ -252,3 +252,12 @@ body {
     padding: 10px;
 }
 
+.button-disabled {
+    background-color: #cccccc;
+    color: white;
+    pointer-events: none;
+}
+
+.button-disabled:hover {
+    background-color: #cccccc;
+}
