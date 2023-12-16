@@ -112,7 +112,7 @@ function positionFeedback(inputId, feedbackId) {
         var inputRect = inputElement.getBoundingClientRect();
         feedbackElement.style.position = 'absolute';
         feedbackElement.style.top = (inputRect.top + window.scrollY) + 'px';
-        feedbackElement.style.left = (inputRect.right + 10) + 'px'; // Adjust as needed
+        feedbackElement.style.left = (inputRect.right + 10) + 'px';
     }
 }
 

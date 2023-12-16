@@ -247,18 +247,16 @@ function savePaperInAccount(paper) {
     
     var paperId = paper.id;
     if (paperId.includes('arxiv.org')) {
-        // Assuming the format is 'http://arxiv.org/abs/{arxiv_id}'
         paperId = paperId.split('/').pop();
     }
 
     console.log("Extracted paperId:", paperId);
     const paperDetails = {
-        // You need to fill this object with actual data from your search results
         title: paper.title,
         abstract: paper.abstract,
         summary: paper.summary,
         references: paper.references,
-        download_link: `http://arxiv.org/pdf/${paperId}.pdf`, // Make sure `paper.id` is correct
+        download_link: `http://arxiv.org/pdf/${paperId}.pdf`,
         citations: paper.citations
     };
 
